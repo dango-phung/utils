@@ -1,23 +1,10 @@
+
 /**
- * 获取表单数据对象 jQuery
- *
- * @param {HTMLFormElement | string} form
- * @return {object}
+ * 前后去空
+ * @param {string} string 
  */
-const getFormData = form => {
-  let data = {}
-  const kvObjArray = $(form).serializeArray()
-
-  for (let obj of kvObjArray) {
-    if (data[obj.name]) {
-      // 多選
-      data[obj.name] = [data[obj.name], $.trim(obj.value)].join(',')
-    } else {
-      data[obj.name] = $.trim(obj.value)
-    }
-  }
-
-  return data
+const trim = string => {
+  return (string || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '');
 }
 
 /**
@@ -151,7 +138,7 @@ const unitNumber = (num, max, unit) => {
 }
 
 export {
-  getFormData,
+  trim,
   queryParse,
   queryStringify,
   removeQueryString,

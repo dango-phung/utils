@@ -33,3 +33,27 @@ num.toLocaleString('zh', { style: 'decimal', minimumFractionDigits: 2, maximumFr
 // 123,456.12
 
 
+/**
+ * 获取表单数据对象 jQuery
+ * @param {HTMLFormElement | string} form
+ * @return {object}
+ */
+const getFormData = form => {
+  let data = {}
+  const kvObjArray = $(form).serializeArray()
+
+  for (let obj of kvObjArray) {
+    if (data[obj.name]) {
+      // 多選
+      data[obj.name] = [data[obj.name], $.trim(obj.value)].join(',')
+    } else {
+      data[obj.name] = $.trim(obj.value)
+    }
+  }
+
+  return data
+}
+
+
+
+
