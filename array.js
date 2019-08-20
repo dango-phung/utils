@@ -35,6 +35,17 @@ const flattenArr = (arr) => {
 }
 
 /**
+ * 
+ * @param {Array<Object>} arr 
+ * @param {String} key 
+ */
+const filterKeyValues = (arr, key) => {
+  return arr.map(item => {
+    return item[key]
+  })
+}
+
+/**
  * Array<Object> 根据 key 排序
  * @param {string} key 
  */
@@ -72,5 +83,6 @@ export {
   simpleUnique,
   subGroupArr,
   flattenArr,
+  filterKeyValues,
   compareArrObject
 }
