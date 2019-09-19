@@ -1,5 +1,7 @@
 
-// 通用校验
+/**
+ * 通用校验
+ */
 
 const Verify = {
   isEmail (val) {
@@ -25,7 +27,7 @@ const Verify = {
     return reg.test(val)
   },
 
-  // 不建议校验使用
+  // 是否为 url  不建议校验使用
   isUrl (url) {
     const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/
     return reg.test(url)

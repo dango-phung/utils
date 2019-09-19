@@ -8,6 +8,49 @@ const trim = string => {
 }
 
 /**
+ * 针对接口返回文件流 依靠浏览器能力执行下载
+ * @param {Object} res 接口回调参数
+ * @param {string} type 指定下载文件类型
+ */
+const BlobDownload = (res, type) => {
+  let blob = type ? new Blob([res.data], { type: type }) : new Blob([res.data])
+  let url = window.URL.createObjectURL(blob)
+  let fileName = res.headers['content-disposition'].split(';')[1].split('=')[1] // 从回调 header 取出 filename
+
+  // IE 处理
+  if (window.navigator.msSaveBlob) {
+    window.navigator.msSaveOrOpenBlob(blob, fileName)
+    return
+  }
+  let linkDom = document.createElement('a')
+  linkDom.className = 'part-download'
+  document.body.appendChild(linkDom)
+
+  linkDom.href = url
+  linkDom.download = fileName // 命名下载名称
+  linkDom.click() // 触发下载
+  window.URL.revokeObjectURL(url) // 下载完成进行释放
+  document.body.removeChild(linkDom) // 删除新增节点
+}
+
+/**
+ * 超出数字上线 单位计数
+ * @param {Number} num
+ * @param {Number} max 最大数 如 10000
+ * @param {String} unit 单位 如 人/次
+ */
+const unitNumber = (num, max, unit) => {
+  let newNum = num
+  if (Number(num) > max || Number(num) === max) {
+    newNum = Math.round((newNum / max) * 100) / 100
+    newNum = newNum + unit
+  }
+
+  return newNum
+}
+
+
+/**
  * 將 queryString 解析为对象
  *
  * @param {string} search
@@ -40,7 +83,7 @@ const queryStringify = query => {
 }
 
 /**
- * 去除 url 中特定的 queryString
+ * 去除 url 中指定的 queryString
  *
  * @param {string} key
  * @param {string} href
@@ -93,48 +136,6 @@ const escapeHtml = (str) => {
   s = s.replace(/\"/g, '&quot;')
 
   return s
-}
-
-/**
- * 针对接口返回文件流 依靠浏览器能力执行下载
- * @param {Object} res 接口回调参数
- * @param {string} type 指定下载文件类型
- */
-const BlobDownload = (res, type) => {
-  let blob = type ? new Blob([res.data], { type: type }) : new Blob([res.data])
-  let url = window.URL.createObjectURL(blob)
-  let fileName = res.headers['content-disposition'].split(';')[1].split('=')[1] // 从回调 header 取出 filename
-
-  // IE 处理
-  if (window.navigator.msSaveBlob) {
-    window.navigator.msSaveOrOpenBlob(blob, fileName)
-    return
-  }
-  let linkDom = document.createElement('a')
-  linkDom.className = 'part-download'
-  document.body.appendChild(linkDom)
-
-  linkDom.href = url
-  linkDom.download = fileName // 命名下载名称
-  linkDom.click() // 触发下载
-  window.URL.revokeObjectURL(url) // 下载完成进行释放
-  document.body.removeChild(linkDom) // 删除新增节点
-}
-
-/**
- * 超出数字上线 单位计数
- * @param {Number} num
- * @param {Number} max 最大数 如 10000
- * @param {String} unit 单位 如 人/次
- */
-const unitNumber = (num, max, unit) => {
-  let newNum = num
-  if (Number(num) > max || Number(num) === max) {
-    newNum = Math.round((newNum / max) * 100) / 100
-    newNum = newNum + unit
-  }
-
-  return newNum
 }
 
 export {

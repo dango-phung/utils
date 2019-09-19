@@ -20,6 +20,7 @@ const uniqueArr = arr.filter((item, index) => {
 })
 // console.log(uniqueArr);  // ['aaa', 'bbb', 'ccc']
 
+
 // 货币格式化
 const num = 123456.1234
 
